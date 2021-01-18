@@ -5,6 +5,7 @@ import ItemList from "./Game/ItemList";
 import ButtonShuffle from "./Game/ButtonShuffle";
 import {Container, Row, Col} from "react-bootstrap";
 import DifficultToggle from "./Game/DifficultToggle";
+import {connect} from "react-redux";
 
 type LiveItemInterface = {
     flower: boolean,
@@ -21,7 +22,7 @@ type TimerInterface = {
     timer: any
 }
 
-const Game = () => {
+const ConnectedGame = () => {
     const [Items, setItems] = useState<ItemInterface[]|null>(null)
     const [list, setList] = useState<LiveItemInterface[]|null>(null)
     const [prevMainItem, setPrevMainItem] = useState<number|null>(null)
@@ -159,8 +160,8 @@ const Game = () => {
     }, [Items, list, generate])
 
     const getTimerTimeByDifficult = (difficult: number) => {
-        let coeficient = 10
-        let i = Math.ceil(coeficient / (difficult) + 1);
+        let coefficient = 10
+        let i = Math.ceil(coefficient / (difficult) + 1);
         // diff 0 = 10
         // diff 1 = 5
         // diff 2 = 3
@@ -221,7 +222,7 @@ const Game = () => {
     let seconds = ("0" + (Math.floor((timer.time / 1000) % 60) % 60)).slice(-2)
 
     return (
-        <Container fluid>
+        <>
             <Row>
                 <Col>Game score: </Col>
                 <Col><h2>{score}</h2></Col>
@@ -230,8 +231,10 @@ const Game = () => {
             </Row>
             <ItemList itemList={list} handleItemClick={onClick} />
             <ButtonShuffle onClick={generate} />
-        </Container>
+        </>
     )
 }
+
+const Game = connect()(ConnectedGame)
 
 export default Game;
